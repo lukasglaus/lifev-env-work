@@ -386,7 +386,42 @@ public:
         return m_patchLocationSumPtr;
     }
     
+ 
+ const vector<vector<double>> PressureLoader (){
+
     
+    ifstream myifstream ("solution.txt");
+    std::string box;
+    int i=0;
+    
+    vector<double> time;
+    vector<double> lvp;
+    vector<double> rvp;
+    
+    if (myifstream.is_open()){
+        while (getline(myifstream,box)){
+            std::stringstream stream(box);
+            string num;
+            vector<double> numbers;
+            
+            while (stream >> num) numbers.push_back(stod(num));
+            
+            time.push_back(numbers[0]);
+            lvp.push_back(numbers[1]);
+            rvp.push_back(numbers[6]);
+            ++i;
+            }
+    }
+    else {cout<<"pressure_file_couldn't be loaded";}
+    
+    vector<vector<double>> FixedPressureDistribution;
+    FixedPressureDistribution.push_back(time);
+    FixedPressureDistribution.push_back(lvp);
+    FixedPressureDistribution.push_back(rvp);
+    
+    return FixedPressureDistribution;
+}
+ 
 protected:
     
     EmSolver& M_emSolver;
