@@ -387,9 +387,9 @@ public:
     }
     
 
-    const vector<vector<double>> pressureloader (std::string filename){
-        
-        
+    const vector<vector<double>> pressureloader (const std::string& filename) const
+    {
+            
         std::ifstream myifstream (filename);
         std::string box;
         int i=0;
@@ -420,8 +420,9 @@ public:
         fixedpressuredistribution.push_back(rvp);
         
         return fixedpressuredistribution;
+   
     }
-    
+ 
 protected:
     
     EmSolver& M_emSolver;
