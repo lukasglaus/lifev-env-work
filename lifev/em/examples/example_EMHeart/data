@@ -36,7 +36,6 @@ monodomain_xml_file = ParamListE.xml
 
     [../]
 
-
 [activation]
 
     [./physics]
@@ -252,6 +251,9 @@ monodomain_xml_file = ParamListE.xml
 
         [../]
 
+    [../pressure_profile]
+    boolpressureloader = true
+    filenamepressureloader = solution.txt
 
     [../patches]
     testAtPreload       = true

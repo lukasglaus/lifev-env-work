@@ -306,7 +306,7 @@ public:
         M_emSolver.tensionEstimator().setDisplacement ( M_emSolver.structuralOperatorPtr()->displacement() );
         M_emSolver.tensionEstimator().analyzeTensionsRecoveryCauchyStresses();
         M_emSolver.tensionEstimator().analyzeTensionsRecoveryVonMisesStress();
-        //M_emSolver.tensionEstimator().analyzeTensionsRecoveryEigenvalues();
+        //M_emSolver.tensionCEstimator().analyzeTensionsRecoveryEigenvalues();
 
         // Compute deformed fiber direction
         M_emSolver.computeDeformedFiberDirection (M_emSolver.structuralOperatorPtr()->f(), *M_emSolver.structuralOperatorPtr()->EMMaterial()->fiberVectorPtr(), *M_emSolver.structuralOperatorPtr()->displacementPtr(), M_emSolver.structuralOperatorPtr()->dispFESpacePtr());
@@ -386,6 +386,41 @@ public:
         return m_patchLocationSumPtr;
     }
     
+
+    const vector<vector<double>> pressureloader (std::string filename){
+        
+        
+        std::ifstream myifstream (filename);
+        std::string box;
+        int i=0;
+        
+        std::vector<double> time;
+        std::vector<double> lvp;
+        std::vector<double> rvp;
+        
+        if (myifstream.is_open()){
+            while (getline(myifstream,box)){
+                std::stringstream stream(box);
+                std::string num;
+                std::vector<double> numbers;
+                
+                while (stream >> num) numbers.push_back(stod(num));
+                
+                time.push_back(numbers[0]);
+                lvp.push_back(numbers[1]);
+                rvp.push_back(numbers[6]);
+                ++i;
+            }
+        }
+        else {cout<<"pressure_file_couldn't be loaded";}
+        
+        std::vector<vector<double>> fixedpressuredistribution;
+        fixedpressuredistribution.push_back(time);
+        fixedpressuredistribution.push_back(lvp);
+        fixedpressuredistribution.push_back(rvp);
+        
+        return fixedpressuredistribution;
+    }
     
 protected:
     
