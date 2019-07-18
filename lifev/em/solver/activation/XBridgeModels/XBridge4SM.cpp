@@ -1,4 +1,4 @@
-#include <lifev/em/solver/activation/xBridgeModels/XBridge4SM.hpp>
+#include <lifev/em/solver/activation/XBridgeModels/XBridge4SM.hpp>
 #include <stdexcept>
 #include <cmath>
 #include <iostream>

@@ -387,7 +387,7 @@ public:
     }
     
 
-    const vector<vector<double>> pressureloader (const std::string& filename) const
+    const std::vector<std::vector<double> > pressureloader (const std::string& filename) const
     {
             
         std::ifstream myifstream (filename);
@@ -414,7 +414,7 @@ public:
         }
         else {cout<<"pressure_file_couldn't be loaded";}
         
-        std::vector<vector<double>> fixedpressuredistribution;
+        std::vector<std::vector<double> > fixedpressuredistribution;
         fixedpressuredistribution.push_back(time);
         fixedpressuredistribution.push_back(lvp);
         fixedpressuredistribution.push_back(rvp);

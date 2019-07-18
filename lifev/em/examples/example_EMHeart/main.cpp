@@ -394,11 +394,13 @@ int main (int argc, char** argv)
     //============================================
     // Load pressure profile
     //============================================
-    const bool boolpressureloader = dataFile ("pressure_profile/boolpressureloader", false)
-    const char filenamepressureloader = dataFile ("pressure_profile/filenamepressureloader", solution.txt)
-    
+    const bool boolpressureloader = dataFile ("pressure_profile/boolpressureloader", false);
+    const string filenamepressureloader = dataFile ("pressure_profile/filenamepressureloader", "solution.txt");
+   
+    std::vector<std::vector<double> > fixedpressuredistribution;
+ 
     if (boolpressureloader){
-        const vector<vector<double>>fixedpressuredistribution = pressureloader (filenamepressureloader);
+        fixedpressuredistribution = heartSolver.pressureloader (filenamepressureloader);
     }
         
     //============================================
@@ -664,6 +666,8 @@ int main (int argc, char** argv)
 
         t = t + dt_activation;
         
+	const double dt_circulation (dt_mechanics / 1000);
+
         //============================================
         // Solve electrophysiology and activation
         //============================================
@@ -686,7 +690,7 @@ int main (int argc, char** argv)
 
             // Linear b.c. extrapolation
             auto bcValuesLoadstep ( bcValues );
-            int currentstep((k - k % mechanicsCouplingIter)/mechanicsCouplingIter));
+            int currentstep((k - k % mechanicsCouplingIter)/mechanicsCouplingIter);
             bcValuesLoadstep[0] = fixedpressuredistribution[1][currentstep] + ( fixedpressuredistribution[1][currentstep+1] - fixedpressuredistribution[1][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
             
             bcValuesLoadstep[1] = fixedpressuredistribution[2][currentstep] + ( fixedpressuredistribution[2][currentstep+1] - fixedpressuredistribution[2][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
@@ -761,7 +765,6 @@ int main (int argc, char** argv)
             if ( makeMechanicsCirculationCoupling )
             {
                 iter = 0;
-                const double dt_circulation ( dt_mechanics / 1000 );
                 solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
                 
                 LifeChrono chronoCoupling;
@@ -889,7 +892,7 @@ int main (int argc, char** argv)
                     }
 
                     printCoupling("Pressure Update");
-                }
+                //}
                 
                 //============================================
                 // Solve circulation
@@ -965,7 +968,7 @@ int main (int argc, char** argv)
         
         dispPre = disp;
             
-        
+      }//  
         
         
         //============================================
