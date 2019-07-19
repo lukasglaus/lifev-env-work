@@ -666,7 +666,7 @@ int main (int argc, char** argv)
 
         t = t + dt_activation;
         
-	const double dt_circulation (dt_mechanics / 1000);
+        const double dt_circulation (dt_mechanics / 1000);
 
         //============================================
         // Solve electrophysiology and activation
@@ -716,6 +716,34 @@ int main (int argc, char** argv)
             // Solve Circulation
             bcValues = { fixedpressuredistribution[1][currentstep] , fixedpressuredistribution[2][currentstep] };
             circulationSolver.iterate(dt_circulation, bcNames, bcValues, iter);
+        
+            //============================================
+            // Export circulation solution
+            //============================================
+            if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
+            
+            
+            //============================================
+            // Power computations
+            //============================================
+            Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
+            Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
+            //Real patchPower1 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 900);
+            //Real patchPower2 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 901);
+            
+            AvgWorkVent(0) += leftVentPower * dt_mechanics;
+            AvgWorkVent(1) += rightVentPower * dt_mechanics;
+            
+            if ( 0 == comm->MyPID() )
+            {
+                std::cout << "\n******************************************";
+                std::cout << "\nInstantaneous vent. power: \t" << leftVentPower << " / " << rightVentPower;
+                std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / t << " / " << AvgWorkVent(1) / t;
+                std::cout << "\n******************************************\n\n";
+            }
+            
+            dispPre = disp;
+        
         }
         
         else
@@ -892,84 +920,84 @@ int main (int argc, char** argv)
                     }
 
                     printCoupling("Pressure Update");
-                //}
+            
+                
+                    //============================================
+                    // Solve circulation
+                    //============================================
+                    circulationSolver.iterate(dt_circulation, bcNames, bcValues, iter);
+                    VCircNew[0] = VCirc[0] + dt_circulation * ( Q("la", "lv") - Q("lv", "sa") );
+                    VCircNew[1] = VCirc[1] + dt_circulation * ( Q("ra", "rv") - Q("rv", "pa") );
+
+                    //============================================
+                    // Solve mechanics
+                    //============================================
+                    modifyPressureBC(bcValues);
+                    solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
+                    solver.solveMechanics();
+
+                    VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
+                    VFeNew[1] = RV.volume(disp, dETFESpace, 1);
+
+                    //============================================
+                    // Residual update
+                    //============================================
+                    R = VFeNew - VCircNew;
+                    printCoupling("Residual Update");
+                }
+     
+                if ( 0 == comm->MyPID() )
+                {
+                    std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                    std::cout << "\nCoupling converged after " << iter << " iteration" << ( iter > 1 ? "s" : "" );
+                    std::cout << "\nTime required: " << chronoCoupling.diff() << " s";
+                    std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n";
+                }
+            
+                //============================================
+                // Update volume variables
+                //============================================
+                VCirc = VCircNew;
+                VFe = VFeNew;
                 
                 //============================================
-                // Solve circulation
+                // 4th order Adam-Bashforth pressure extrapol.
                 //============================================
-                circulationSolver.iterate(dt_circulation, bcNames, bcValues, iter);
-                VCircNew[0] = VCirc[0] + dt_circulation * ( Q("la", "lv") - Q("lv", "sa") );
-                VCircNew[1] = VCirc[1] + dt_circulation * ( Q("ra", "rv") - Q("rv", "pa") );
-
-                //============================================
-                // Solve mechanics
-                //============================================
-                modifyPressureBC(bcValues);
-                solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
-                solver.solveMechanics();
-
-                VFeNew[0] = LV.volume(disp, dETFESpace, - 1);
-                VFeNew[1] = RV.volume(disp, dETFESpace, 1);
-
-                //============================================
-                // Residual update
-                //============================================
-                R = VFeNew - VCircNew;
-                printCoupling("Residual Update");
-            }
- 
-            if ( 0 == comm->MyPID() )
-            {
-                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                std::cout << "\nCoupling converged after " << iter << " iteration" << ( iter > 1 ? "s" : "" );
-                std::cout << "\nTime required: " << chronoCoupling.diff() << " s";
-                std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n";
-            }
-            
-            //============================================
-            // Update volume variables
-            //============================================
-            VCirc = VCircNew;
-            VFe = VFeNew;
-            
-            //============================================
-            // 4th order Adam-Bashforth pressure extrapol.
-            //============================================
-            bcValues4thOAB = bcValues;
-            heartSolver.extrapolate4thOrderAdamBashforth(bcValues4thOAB, bcValuesPre, dpMax);
+                bcValues4thOAB = bcValues;
+                heartSolver.extrapolate4thOrderAdamBashforth(bcValues4thOAB, bcValuesPre, dpMax);
         
+        
+        
+        
+                //============================================
+                // Export circulation solution
+                //============================================
+                if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
+            
+                
+                //============================================
+                // Power computations
+                //============================================
+                Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
+                Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
+                //Real patchPower1 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 900);
+                //Real patchPower2 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 901);
+                
+                AvgWorkVent(0) += leftVentPower * dt_mechanics;
+                AvgWorkVent(1) += rightVentPower * dt_mechanics;
+
+                if ( 0 == comm->MyPID() )
+                {
+                    std::cout << "\n******************************************";
+                    std::cout << "\nInstantaneous vent. power: \t" << leftVentPower << " / " << rightVentPower;
+                    std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / t << " / " << AvgWorkVent(1) / t;
+                    std::cout << "\n******************************************\n\n";
+                }
+            
+                dispPre = disp;
+            
+            }//end makeMechanicsCirculationCoupling
         } //end of PressureLoad else
-        
-        
-        //============================================
-        // Export circulation solution
-        //============================================
-        if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
-    
-        
-        //============================================
-        // Power computations
-        //============================================
-        Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
-        Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
-        //Real patchPower1 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 900);
-        //Real patchPower2 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 901);
-        
-        AvgWorkVent(0) += leftVentPower * dt_mechanics;
-        AvgWorkVent(1) += rightVentPower * dt_mechanics;
-
-        if ( 0 == comm->MyPID() )
-        {
-            std::cout << "\n******************************************";
-            std::cout << "\nInstantaneous vent. power: \t" << leftVentPower << " / " << rightVentPower;
-            std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / t << " / " << AvgWorkVent(1) / t;
-            std::cout << "\n******************************************\n\n";
-        }
-        
-        dispPre = disp;
-            
-      }//  
-        
         
         //============================================
         // Export FE-solution
