@@ -746,7 +746,7 @@ int main (int argc, char** argv)
         
         }
         
-        else
+        /* else
         {
         
             //============================================
@@ -997,7 +997,7 @@ int main (int argc, char** argv)
                 dispPre = disp;
             
             }//end makeMechanicsCirculationCoupling
-        } //end of PressureLoad else
+        } //end of PressureLoad else */
         
         //============================================
         // Export FE-solution
