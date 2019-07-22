@@ -684,6 +684,15 @@ int main (int argc, char** argv)
         
         if (boolpressureloader)
         {
+           
+            if ( 0 == comm->MyPID() && k==1 )
+            {
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                std::cout << "\Pressureloaderstatus = " << boolpressureloader;
+                std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+            }
+            
+            
             auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
             
            
@@ -748,6 +757,14 @@ int main (int argc, char** argv)
         
         /* else
         {
+         
+        if ( 0 == comm->MyPID() && k==1 )
+        {
+        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+        std::cout << "\Pressureloaderstatus = " << boolpressureloader;
+        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+        }
+         
         
             //============================================
             // Load steps mechanics (activation & b.c.)
