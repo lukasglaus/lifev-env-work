@@ -755,7 +755,7 @@ int main (int argc, char** argv)
         
         }
         
-        /* else
+         else
         {
          
         if ( 0 == comm->MyPID() && k==1 )
@@ -1014,7 +1014,7 @@ int main (int argc, char** argv)
                 dispPre = disp;
             
             }//end makeMechanicsCirculationCoupling
-        } //end of PressureLoad else */
+        } //end of PressureLoad else
         
         //============================================
         // Export FE-solution
