@@ -399,8 +399,13 @@ int main (int argc, char** argv)
    
     std::vector<std::vector<double> > fixedpressuredistribution;
  
-    if (boolpressureloader){
+    if (0 == comm->MyPID() && boolpressureloader){
         fixedpressuredistribution = heartSolver.pressureloader (filenamepressureloader);
+        
+        std::cout << "\n*****************************************************************";
+        std::cout << "  Presureloader: fixedpressuredistribution loaded ";
+        std::cout << "\n*****************************************************************\n";
+        
     }
         
     //============================================
@@ -453,7 +458,7 @@ int main (int argc, char** argv)
             
             if ( 0 == comm->MyPID() )
             {
-                //std::cout << "\n*****************************************************************";
+                std::cout << "\n*****************************************************************";
                 std::cout << "  Restart data at TIME = -1.0 imported in " << chronoRestart.diff() << " s";
                 std::cout << "\n*****************************************************************\n";
             }
@@ -697,17 +702,15 @@ int main (int argc, char** argv)
             const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
             const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
             
+            if ( 0 == comm->MyPID() && k==1 )
+            {
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                std::cout << "\Pressureloaderstatus (in if loop) = " << boolpressureloader;
+                std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+            }
+            
             if ( makeMechanicsCirculationCoupling )
             {
-                
-                    if ( 0 == comm->MyPID() && k==1 )
-                    {
-                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                        std::cout << "\Pressureloaderstatus (in if loop) = " << boolpressureloader;
-                        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-                    }
-                
-                
                     auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
                 
                 

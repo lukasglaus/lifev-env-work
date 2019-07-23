@@ -398,7 +398,8 @@ public:
         std::vector<double> lvp;
         std::vector<double> rvp;
         
-        if (myifstream.is_open()){
+        if (myifstream.is_open())
+        {
             while (getline(myifstream,box)){
                 std::stringstream stream(box);
                 std::string num;
