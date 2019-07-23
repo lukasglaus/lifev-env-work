@@ -689,81 +689,89 @@ int main (int argc, char** argv)
             std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
         }
         
-        if (boolpressureloader == true)
+        if (boolpressureloader)
         {
-           
-            if ( 0 == comm->MyPID() && k==1 )
-            {
-                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                std::cout << "\Pressureloaderstatus (in if loop) = " << boolpressureloader;
-                std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-            }
-            
-            
             auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
             
-           
-
-            // Linear b.c. extrapolation
-            auto bcValuesLoadstep ( bcValues );
-            int currentstep((k - k % mechanicsCouplingIter)/mechanicsCouplingIter);
+            const bool activationBelowLoadstepThreshold (minActivationValue < activationLimit_loadstep);
+            const bool makeLoadstep (k % mechanicsLoadstepIter == 0 && activationBelowLoadstepThreshold);
+            const bool makeMechanicsCirculationCoupling (k % mechanicsCouplingIter == 0);
             
-            bcValuesLoadstep[0] = fixedpressuredistribution[1][currentstep] + ( fixedpressuredistribution[1][currentstep+1] - fixedpressuredistribution[1][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
-            
-            bcValuesLoadstep[1] = fixedpressuredistribution[2][currentstep] + ( fixedpressuredistribution[2][currentstep+1] - fixedpressuredistribution[2][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
-        
-            if ( 0 == comm->MyPID() )
+            if ( makeMechanicsCirculationCoupling )
             {
-                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                std::cout << "\nLoad step at time = " << t;
-                std::cout << "\nLin. LV-Pressure: " << bcValuesLoadstep[0];
-                std::cout << "\nLin. RV-Pressure: " << bcValuesLoadstep[1];
-                std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-            }
                 
-            // Load step mechanics
-            solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
-            modifyPressureBC(bcValuesLoadstep);
-            
-            //modifyEssentialPatchBC(t);
-            patchHandler.modifyPatchBC(solver, t);
-            solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
-            solver.solveMechanics();
-            
-            // Solve Circulation
-           
-            iter = 0;
-            
-            bcValues = { fixedpressuredistribution[1][currentstep] , fixedpressuredistribution[2][currentstep] };
-            circulationSolver.iterate(dt_circulation, bcNames, bcValues, iter);
-        
-            //============================================
-            // Export circulation solution
-            //============================================
-            if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
-            
-            
-            //============================================
-            // Power computations
-            //============================================
-            Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
-            Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
-            //Real patchPower1 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 900);
-            //Real patchPower2 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 901);
-            
-            AvgWorkVent(0) += leftVentPower * dt_mechanics;
-            AvgWorkVent(1) += rightVentPower * dt_mechanics;
-            
-            if ( 0 == comm->MyPID() )
-            {
-                std::cout << "\n******************************************";
-                std::cout << "\nInstantaneous vent. power: \t" << leftVentPower << " / " << rightVentPower;
-                std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / t << " / " << AvgWorkVent(1) / t;
-                std::cout << "\n******************************************\n\n";
+                    if ( 0 == comm->MyPID() && k==1 )
+                    {
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                        std::cout << "\Pressureloaderstatus (in if loop) = " << boolpressureloader;
+                        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                    }
+                
+                
+                    auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
+                
+                
+
+                    // Linear b.c. extrapolation
+                    auto bcValuesLoadstep ( bcValues );
+                    int currentstep((k - k % mechanicsCouplingIter)/mechanicsCouplingIter);
+                
+                    bcValuesLoadstep[0] = fixedpressuredistribution[1][currentstep] + ( fixedpressuredistribution[1][currentstep+1] - fixedpressuredistribution[1][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
+                
+                    bcValuesLoadstep[1] = fixedpressuredistribution[2][currentstep] + ( fixedpressuredistribution[2][currentstep+1] - fixedpressuredistribution[2][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
+                
+                    if ( 0 == comm->MyPID() )
+                    {
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                        std::cout << "\nLoad step at time = " << t;
+                        std::cout << "\nLin. LV-Pressure: " << bcValuesLoadstep[0];
+                        std::cout << "\nLin. RV-Pressure: " << bcValuesLoadstep[1];
+                        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                    }
+                
+                    // Load step mechanics
+                    solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
+                    modifyPressureBC(bcValuesLoadstep);
+                
+                    //modifyEssentialPatchBC(t);
+                    patchHandler.modifyPatchBC(solver, t);
+                    solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
+                    solver.solveMechanics();
+                
+                    // Solve Circulation
+                
+                    iter = 0;
+                
+                    bcValues = { fixedpressuredistribution[1][currentstep] , fixedpressuredistribution[2][currentstep] };
+                    circulationSolver.iterate(dt_circulation, bcNames, bcValues, iter);
+                
+                    //============================================
+                    // Export circulation solution
+                    //============================================
+                    if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
+                
+                
+                    //============================================
+                    // Power computations
+                    //============================================
+                    Real leftVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 454);
+                    Real rightVentPower = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 455);
+                    //Real patchPower1 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("lv"), dt_mechanics, 900);
+                    //Real patchPower2 = heartSolver.externalPower(disp, dispPre, dETFESpace, p("rv"), dt_mechanics, 901);
+                
+                    AvgWorkVent(0) += leftVentPower * dt_mechanics;
+                    AvgWorkVent(1) += rightVentPower * dt_mechanics;
+                
+                    if ( 0 == comm->MyPID() )
+                    {
+                        std::cout << "\n******************************************";
+                        std::cout << "\nInstantaneous vent. power: \t" << leftVentPower << " / " << rightVentPower;
+                        std::cout << "\nAveraged vent. power: \t" << AvgWorkVent(0) / t << " / " << AvgWorkVent(1) / t;
+                        std::cout << "\n******************************************\n\n";
+                    }
+                
+                    dispPre = disp;
             }
-            
-            dispPre = disp;
-        
         }
         
         else
