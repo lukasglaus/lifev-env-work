@@ -56,6 +56,9 @@ monodomain_xml_file = ParamListE.xml
 
     [../]
 
+[pressure_profile]
+boolpressureloader = true
+filenamepressureloader = solution.txt
 
 [solid]
 
@@ -250,10 +253,6 @@ monodomain_xml_file = ParamListE.xml
         displacement        = 1.2
 
         [../]
-
-    [../pressure_profile]
-    boolpressureloader = true
-    filenamepressureloader = solution.txt
 
     [../patches]
     testAtPreload       = true

@@ -682,13 +682,20 @@ int main (int argc, char** argv)
         // Pressure Loader
         //============================================
         
-        if (boolpressureloader)
+        if ( 0 == comm->MyPID() && k==1 )
+        {
+            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+            std::cout << "\Pressureloaderstatus (before loop) = " << boolpressureloader;
+            std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+        }
+        
+        if (boolpressureloader == true)
         {
            
             if ( 0 == comm->MyPID() && k==1 )
             {
                 std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                std::cout << "\Pressureloaderstatus = " << boolpressureloader;
+                std::cout << "\Pressureloaderstatus (in if loop) = " << boolpressureloader;
                 std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
             
@@ -700,6 +707,7 @@ int main (int argc, char** argv)
             // Linear b.c. extrapolation
             auto bcValuesLoadstep ( bcValues );
             int currentstep((k - k % mechanicsCouplingIter)/mechanicsCouplingIter);
+            
             bcValuesLoadstep[0] = fixedpressuredistribution[1][currentstep] + ( fixedpressuredistribution[1][currentstep+1] - fixedpressuredistribution[1][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
             
             bcValuesLoadstep[1] = fixedpressuredistribution[2][currentstep] + ( fixedpressuredistribution[2][currentstep+1] - fixedpressuredistribution[2][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
@@ -723,6 +731,9 @@ int main (int argc, char** argv)
             solver.solveMechanics();
             
             // Solve Circulation
+           
+            iter = 0;
+            
             bcValues = { fixedpressuredistribution[1][currentstep] , fixedpressuredistribution[2][currentstep] };
             circulationSolver.iterate(dt_circulation, bcNames, bcValues, iter);
         
@@ -755,13 +766,13 @@ int main (int argc, char** argv)
         
         }
         
-         else
+        else
         {
          
         if ( 0 == comm->MyPID() && k==1 )
         {
         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-        std::cout << "\Pressureloaderstatus = " << boolpressureloader;
+        std::cout << "\Pressureloaderstatus (in else loop) = " << boolpressureloader;
         std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
         }
          
