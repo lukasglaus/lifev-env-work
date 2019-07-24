@@ -715,7 +715,7 @@ int main (int argc, char** argv)
                     if ( 0 == comm->MyPID() && k==1 )
                     {
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                        std::cout << "\nmakeMechanicsCiculationCoupling = "<<makeMechanicsCirculationCoupling<<;
+                        std::cout << "\nmakeMechanicsCiculationCoupling = "<<makeMechanicsCirculationCoupling;
                         std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
                     }
                 
