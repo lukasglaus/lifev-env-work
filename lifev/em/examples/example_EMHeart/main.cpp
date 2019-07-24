@@ -715,7 +715,7 @@ int main (int argc, char** argv)
                     if ( 0 == comm->MyPID() && k==1 )
                     {
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                        std::cout << "\nmakeMechanicsCiculationCoupling (in if loop) = " << makeMechanicsCirculationCoupling<<;
+                        std::cout << "\nmakeMechanicsCiculationCoupling = "<<makeMechanicsCirculationCoupling<<;
                         std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
                     }
                 
@@ -731,7 +731,7 @@ int main (int argc, char** argv)
                 if ( 0 == comm->MyPID() && k==1 )
                 {
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                    std::cout << "\ncurrent step (in if loop) = " << currentstep<<;
+                    std::cout << "\ncurrent step (in if loop) = " << currentstep;
                     std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
                 }
                 
