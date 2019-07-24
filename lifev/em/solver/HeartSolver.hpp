@@ -402,10 +402,10 @@ public:
         {
             while (getline(myifstream,box)){
                 std::stringstream stream(box);
-                std::string num;
+                double num;
                 std::vector<double> numbers;
                 
-                while (stream >> num) numbers.push_back(std::stod(num));
+                while (stream >> num) numbers.push_back(num);
                 
                 time.push_back(numbers[0]);
                 lvp.push_back(numbers[1]);
