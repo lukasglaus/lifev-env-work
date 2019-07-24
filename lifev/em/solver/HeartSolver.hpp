@@ -390,7 +390,7 @@ public:
     const std::vector<std::vector<double> > pressureloader (const std::string& filename) const
     {
             
-        std::ifstream myifstream (filename);
+        std::ifstream myifstream ("solutionforpressureloader.txt");
         std::string box;
         int i=0;
         
