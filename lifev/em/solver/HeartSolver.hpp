@@ -409,9 +409,13 @@ public:
                 std::stringstream stream(box);
                 std::string num;
                 std::vector<double> numbers;
+                cout<<"/n"<<box;
                 
-                while (stream >> num) numbers.push_back(std::stod(num));
-                
+                while (stream >> num)
+                    {
+                        cout<<"/n"<<num;
+                        numbers.push_back(std::stod(num));
+                    }
                 time.push_back(numbers[0]);
                 lvp.push_back(numbers[1]);
                 rvp.push_back(numbers[6]);
