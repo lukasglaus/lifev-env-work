@@ -405,7 +405,7 @@ public:
                 std::string num;
                 std::vector<double> numbers;
                 
-                while (stream >> num) numbers.push_back(stod(num));
+                while (stream >> num) numbers.push_back(std::stod(num));
                 
                 time.push_back(numbers[0]);
                 lvp.push_back(numbers[1]);
