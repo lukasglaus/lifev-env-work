@@ -404,7 +404,7 @@ int main (int argc, char** argv)
         
         std::cout << "\n*****************************************************************";
         std::cout << "\nPresureloader: fixedpressuredistribution loaded ";
-        std::cout << "\nTest of fixedpressuredistribution " <<fixedpressuredistribution[0][0];
+        //std::cout << "\nTest of fixedpressuredistribution " <<fixedpressuredistribution[0][0];
         std::cout << "\n*****************************************************************\n";
         
     }
