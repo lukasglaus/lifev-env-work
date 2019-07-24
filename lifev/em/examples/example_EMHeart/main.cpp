@@ -706,7 +706,7 @@ int main (int argc, char** argv)
             if ( 0 == comm->MyPID() && k==1 )
             {
                 std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                std::cout << "\nPressureloaderstatus (in if loop) = " << boolpressureloader<<;
+                std::cout << "\nPressureloaderstatus (in if loop) = " << boolpressureloader;
                 std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
             
