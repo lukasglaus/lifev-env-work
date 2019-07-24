@@ -399,14 +399,16 @@ int main (int argc, char** argv)
    
     std::vector<std::vector<double> > fixedpressuredistribution;
  
-    if (0 == comm->MyPID() && boolpressureloader){
+    if (boolpressureloader){
         fixedpressuredistribution = heartSolver.pressureloader (filenamepressureloader);
         
+        if ( 0 == comm->MyPID() )
+        {
         std::cout << "\n*****************************************************************";
         std::cout << "\nPressureloader: fixedpressuredistribution loaded ";
         std::cout << "\nTest of fixedpressuredistribution "<<fixedpressuredistribution[1][0];
         std::cout << "\n*****************************************************************\n";
-        
+        }
     }
         
     //============================================
