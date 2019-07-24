@@ -403,7 +403,8 @@ int main (int argc, char** argv)
         fixedpressuredistribution = heartSolver.pressureloader (filenamepressureloader);
         
         std::cout << "\n*****************************************************************";
-        std::cout << "  Presureloader: fixedpressuredistribution loaded ";
+        std::cout << "\nPresureloader: fixedpressuredistribution loaded ";
+        std::cout << "\nTest of fixedpressuredistribution " <<fixedpressuredistribution[0][0];
         std::cout << "\n*****************************************************************\n";
         
     }
