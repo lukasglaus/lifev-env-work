@@ -395,7 +395,7 @@ int main (int argc, char** argv)
     // Load pressure profile
     //============================================
     const bool boolpressureloader = dataFile ("pressure_profile/boolpressureloader", false);
-    const string filenamepressureloader = dataFile ("pressure_profile/filenamepressureloader", solutionforpressureloader.txt);
+    const string filenamepressureloader = dataFile ("pressure_profile/filenamepressureloader", "solutionforpressureloader.txt");
    
     std::vector<std::vector<double> > fixedpressuredistribution;
  
