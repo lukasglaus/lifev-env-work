@@ -389,7 +389,12 @@ public:
 
     const std::vector<std::vector<double> > pressureloader (const std::string& filename) const
     {
-            
+    #include <string>
+    #include <vector>
+    #include <iostream>
+    #include <sstream>
+    #include <fstream>
+        
         std::ifstream myifstream ("solutionforpressureloader.txt");
         std::string box;
         int i=0;
@@ -402,10 +407,10 @@ public:
         {
             while (getline(myifstream,box)){
                 std::stringstream stream(box);
-                double num;
+                std::string num;
                 std::vector<double> numbers;
                 
-                while (stream >> num) numbers.push_back(num);
+                while (stream >> num) numbers.push_back(std::stod(num));
                 
                 time.push_back(numbers[0]);
                 lvp.push_back(numbers[1]);
