@@ -41,7 +41,7 @@ monodomain_xml_file = ParamListE.xml
     [./physics]
     ActivationModel         = ActiveStrainRossi14
     CalciumIndex            = 3
-    ActiveForceCoefficient  = -0.0  # -6.25  # -7.0 # -7.3
+    ActiveForceCoefficient  = -6.25  # -7.0 # -7.3
     InverseViscosity        = 0.0002
     ChemicalThreshold       = 0.21
 
@@ -52,7 +52,7 @@ monodomain_xml_file = ParamListE.xml
     [../pathology]
     strength    = 0.2
     infarctPos  = '2.0 -8.0 -3.0'
-    radius      = 3.0 #3.0
+    radius      = 0 #3.0
 
     [../]
 
