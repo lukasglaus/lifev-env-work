@@ -387,7 +387,7 @@ public:
     }
     
 
-    const std::vector<std::vector<double> > pressureloader (const std::string& filename) const
+    const std::vector<std::vector<double> > pressureloader (std::string filename) const
     {
     #include <string>
     #include <vector>
@@ -399,7 +399,7 @@ public:
         std::string box;
         int i=0;
         
-        cout<<"pressureloader: filename" <<filename;
+        cout<<"\npressureloader filename: " <<filename;
         
         std::vector<double> time;
         std::vector<double> lvp;
@@ -424,9 +424,9 @@ public:
                 
             }
             
-            cout<<"pressureloader: fixed pressure vector generated";
+            cout<<"\npressureloader: fixed pressure vector generated";
         }
-        else {cout<<"pressure_file_couldn't be loaded";}
+        else {cout<<"\npressure_file_couldn't be loaded";}
         
         std::vector<std::vector<double> > fixedpressuredistribution;
         fixedpressuredistribution.push_back(time);
