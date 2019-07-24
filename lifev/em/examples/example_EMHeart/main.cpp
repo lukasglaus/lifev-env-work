@@ -690,7 +690,7 @@ int main (int argc, char** argv)
         if ( 0 == comm->MyPID() && k==1 )
         {
             std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-            std::cout << "\Pressureloaderstatus (before loop) = " << boolpressureloader;
+            std::cout << "\nPressureloaderstatus (before loop) = " << boolpressureloader;
             std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
         }
         
@@ -705,19 +705,34 @@ int main (int argc, char** argv)
             if ( 0 == comm->MyPID() && k==1 )
             {
                 std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-                std::cout << "\Pressureloaderstatus (in if loop) = " << boolpressureloader;
+                std::cout << "\nPressureloaderstatus (in if loop) = " << boolpressureloader<<;
                 std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
             
             if ( makeMechanicsCirculationCoupling )
             {
-                    auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
+                    if ( 0 == comm->MyPID() && k==1 )
+                    {
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                        std::cout << "\nmakeMechanicsCiculationCoupling (in if loop) = " << makeMechanicsCirculationCoupling<<;
+                        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                    }
+                
+                
+                   // auto minActivationValue ( solver.activationModelPtr() -> fiberActivationPtr() -> minValue() );
                 
                 
 
                     // Linear b.c. extrapolation
                     auto bcValuesLoadstep ( bcValues );
                     int currentstep((k - k % mechanicsCouplingIter)/mechanicsCouplingIter);
+                
+                if ( 0 == comm->MyPID() && k==1 )
+                {
+                    std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                    std::cout << "\ncurrent step (in if loop) = " << currentstep<<;
+                    std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                }
                 
                     bcValuesLoadstep[0] = fixedpressuredistribution[1][currentstep] + ( fixedpressuredistribution[1][currentstep+1] - fixedpressuredistribution[1][currentstep] ) * ( k % mechanicsCouplingIter ) / mechanicsCouplingIter;
                 
@@ -783,7 +798,7 @@ int main (int argc, char** argv)
         if ( 0 == comm->MyPID() && k==1 )
         {
         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-        std::cout << "\Pressureloaderstatus (in else loop) = " << boolpressureloader;
+        std::cout << "\nPressureloaderstatus (in else loop) = " << boolpressureloader;
         std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
         }
          
