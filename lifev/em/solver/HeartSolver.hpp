@@ -416,7 +416,9 @@ public:
                 lvp.push_back(numbers[1]);
                 rvp.push_back(numbers[6]);
                 ++i;
+                
             }
+            cout<<"fixed pressure vector generated";
         }
         else {cout<<"pressure_file_couldn't be loaded";}
         
