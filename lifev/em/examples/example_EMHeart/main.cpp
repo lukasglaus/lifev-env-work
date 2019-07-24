@@ -395,7 +395,7 @@ int main (int argc, char** argv)
     // Load pressure profile
     //============================================
     const bool boolpressureloader = dataFile ("pressure_profile/boolpressureloader", false);
-    const string filenamepressureloader = dataFile ("pressure_profile/filenamepressureloader", "solution.txt");
+    const string filenamepressureloader = dataFile ("pressure_profile/filenamepressureloader", solutionforpressureloader.txt);
    
     std::vector<std::vector<double> > fixedpressuredistribution;
  
@@ -403,8 +403,8 @@ int main (int argc, char** argv)
         fixedpressuredistribution = heartSolver.pressureloader (filenamepressureloader);
         
         std::cout << "\n*****************************************************************";
-        std::cout << "\nPresureloader: fixedpressuredistribution loaded ";
-        //std::cout << "\nTest of fixedpressuredistribution " <<fixedpressuredistribution[0][0];
+        std::cout << "\nPressureloader: fixedpressuredistribution loaded ";
+        std::cout << "\nTest of fixedpressuredistribution "<<fixedpressuredistribution[1][0];
         std::cout << "\n*****************************************************************\n";
         
     }
@@ -707,12 +707,13 @@ int main (int argc, char** argv)
             {
                 std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                 std::cout << "\nPressureloaderstatus (in if loop) = " << boolpressureloader;
+                std::cout << "\nmakeMechanicsCirc.Coupling = " << makeMechanicsCirculationCoupling;
                 std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
             }
             
             if ( makeMechanicsCirculationCoupling )
             {
-                    if ( 0 == comm->MyPID() && k==1 )
+                    if ( 0 == comm->MyPID() && k==mechanicsCouplingIter )
                     {
                         std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                         std::cout << "\nmakeMechanicsCiculationCoupling = "<<makeMechanicsCirculationCoupling;
@@ -728,7 +729,7 @@ int main (int argc, char** argv)
                     auto bcValuesLoadstep ( bcValues );
                     int currentstep((k - k % mechanicsCouplingIter)/mechanicsCouplingIter);
                 
-                if ( 0 == comm->MyPID() && k==1 )
+                if ( 0 == comm->MyPID() && k==mechanicsCouplingIter )
                 {
                     std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
                     std::cout << "\ncurrent step (in if loop) = " << currentstep;
@@ -752,11 +753,25 @@ int main (int argc, char** argv)
                     solver.structuralOperatorPtr() -> data() -> dataTime() -> setTime(t);
                     modifyPressureBC(bcValuesLoadstep);
                 
+                    if ( 0 == comm->MyPID() )
+                    {
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                        std::cout << "\nPressureBCmodified";
+                        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                    }
+                
                     //modifyEssentialPatchBC(t);
                     patchHandler.modifyPatchBC(solver, t);
                     solver.bcInterfacePtr() -> updatePhysicalSolverVariables();
                     solver.solveMechanics();
                 
+                    if ( 0 == comm->MyPID() )
+                    {
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                        std::cout << "\nMechanics solved";
+                        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                    }
+            
                     // Solve Circulation
                 
                     iter = 0;
@@ -764,11 +779,25 @@ int main (int argc, char** argv)
                     bcValues = { fixedpressuredistribution[1][currentstep] , fixedpressuredistribution[2][currentstep] };
                     circulationSolver.iterate(dt_circulation, bcNames, bcValues, iter);
                 
+                    if ( 0 == comm->MyPID() )
+                    {
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                        std::cout << "\nCirculation solved";
+                        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                    }
+                
+                
                     //============================================
                     // Export circulation solution
                     //============================================
                     if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
                 
+                    if ( 0 == comm->MyPID() )
+                    {
+                        std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                        std::cout << "\nCirculation solution exported";
+                        std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+                    }
                 
                     //============================================
                     // Power computations

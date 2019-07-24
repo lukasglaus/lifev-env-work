@@ -387,7 +387,7 @@ public:
     }
     
 
-    const std::vector<std::vector<double> > pressureloader (std::string filename) const
+    const std::vector<std::vector<double> > pressureloader (const std::string& filename) const
     {
     #include <string>
     #include <vector>
