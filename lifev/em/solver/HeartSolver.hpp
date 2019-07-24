@@ -395,7 +395,7 @@ public:
     #include <sstream>
     #include <fstream>
         
-        std::ifstream myifstream ("solutionforpressureloader.txt");
+        std::ifstream myifstream (filename);
         std::string box;
         int i=0;
         
@@ -409,20 +409,20 @@ public:
                 std::stringstream stream(box);
                 std::string num;
                 std::vector<double> numbers;
-                cout<<"/n"<<box;
                 
                 while (stream >> num)
                     {
-                        cout<<"/n"<<num;
                         numbers.push_back(std::stod(num));
                     }
+                
                 time.push_back(numbers[0]);
                 lvp.push_back(numbers[1]);
                 rvp.push_back(numbers[6]);
                 ++i;
                 
             }
-            cout<<"fixed pressure vector generated";
+            
+            cout<<"pressureloader: fixed pressure vector generated";
         }
         else {cout<<"pressure_file_couldn't be loaded";}
         
