@@ -402,7 +402,7 @@ int main (int argc, char** argv)
     if (boolpressureloader){
         fixedpressuredistribution = heartSolver.pressureloader (filenamepressureloader);
         
-        if ( 0 == comm->MyPID() )
+        if ( 0 == comm->MyPID())
         {
         std::cout << "\n*****************************************************************";
         std::cout << "\nPressureloader: fixedpressuredistribution loaded ";

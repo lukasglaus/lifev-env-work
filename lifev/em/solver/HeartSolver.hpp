@@ -398,8 +398,7 @@ public:
         std::ifstream myifstream (filename);
         std::string box;
         int i=0;
-        
-        cout<<"\npressureloader filename: " <<filename;
+        if ( 0 == comm->MyPID() ) {cout<<"\npressureloader filename: " <<filename};
         
         std::vector<double> time;
         std::vector<double> lvp;
@@ -424,9 +423,14 @@ public:
                 
             }
             
-            cout<<"\npressureloader: fixed pressure vector generated";
+            if ( 0 == comm->MyPID() ) cout<<"\npressureloader: fixed pressure vector generated";
         }
-        else {cout<<"\npressure_file_couldn't be loaded";}
+        
+        else
+        {
+            if ( 0 == comm->MyPID() ) cout<<"\npressure_file_couldn't be loaded";
+            
+        }
         
         std::vector<std::vector<double> > fixedpressuredistribution;
         fixedpressuredistribution.push_back(time);
