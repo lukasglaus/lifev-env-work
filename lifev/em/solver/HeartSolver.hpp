@@ -399,7 +399,7 @@ public:
         std::string box;
         int i=0;
         
-        auto comm = emSolver.comm();
+        auto comm = emSolver().comm();
         
         if ( 0 == comm->MyPID()) cout<<"\npressureloader filename: " <<filename;
         
