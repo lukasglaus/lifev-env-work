@@ -424,12 +424,12 @@ public:
                 
             }
             
-            if ( 0 == comm->MyPID() ) cout<<"\npressureloader: fixed pressure vector generated";
+            if ( 0 == emSolver().comm() ) cout<<"\npressureloader: fixed pressure vector generated";
         }
         
         else
         {
-            if ( 0 == comm->MyPID() ) cout<<"\npressure_file_couldn't be loaded";
+            if ( 0 == emSolver().comm() ) cout<<"\npressure_file_couldn't be loaded";
             
         }
         
