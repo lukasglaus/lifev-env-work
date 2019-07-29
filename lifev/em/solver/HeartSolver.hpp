@@ -387,7 +387,7 @@ public:
     }
     
 
-    const std::vector<std::vector<double> > pressureloader (const std::string& filename) const
+    const std::vector<std::vector<double> > pressureloader (const std::string& filename)
     {
     #include <string>
     #include <vector>
@@ -398,7 +398,7 @@ public:
         std::ifstream myifstream (filename);
         std::string box;
         int i=0;
-                
+        
         if ( 0 == emSolver().comm()->MyPID()) cout<<"\npressureloader filename: " <<filename;
         
         std::vector<double> time;
