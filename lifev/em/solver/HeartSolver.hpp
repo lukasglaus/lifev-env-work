@@ -398,7 +398,7 @@ public:
         std::ifstream myifstream (filename);
         std::string box;
         int i=0;
-        if ( 0 == comm->MyPID() ) {cout<<"\npressureloader filename: " <<filename};
+        if ( 0 == comm->MyPID()) cout<<"\npressureloader filename: " <<filename;
         
         std::vector<double> time;
         std::vector<double> lvp;
