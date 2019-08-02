@@ -827,12 +827,12 @@ int main (int argc, char** argv)
         else
         {
          
-        if ( 0 == comm->MyPID() && k==1 )
-        {
-            std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
-            std::cout << "\nPressureloaderstatus (in else loop) = " << boolpressureloader;
-            std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
-        }
+            if ( 0 == comm->MyPID() && k==1 )
+            {
+                std::cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
+                std::cout << "\nPressureloaderstatus (in else loop) = " << boolpressureloader;
+                std::cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+            }
          
         
             //============================================
@@ -1059,8 +1059,8 @@ int main (int argc, char** argv)
                 // Export circulation solution
                 //============================================
                 
-                //if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
-                circulationSolver.exportSolution( circulationOutputFile );
+                if ( 0 == comm->MyPID() ) circulationSolver.exportSolution( circulationOutputFile );
+              
                 
                 //============================================
                 // Power computations
