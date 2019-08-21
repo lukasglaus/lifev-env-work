@@ -44,7 +44,7 @@ public:
     
 protected:
     
-    virtual vectorPtr_Type directionalVectorField (const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time) const
+    virtual vectorPtr_Type directionalVectorField (EMSolver<RegionMesh<LinearTetra>, EMMonodomainSolver<RegionMesh<LinearTetra> > >& solver,const boost::shared_ptr<FESpace<RegionMesh<LinearTetra>, MapEpetra >> dFeSpace, Vector3D& direction, const Real& disp, const Real& time) const
     {
         // auto p2PositionVector = p2PositionVectorDisplaced(dFeSpace);
         auto p2PositionVector = p2PositionVectorInitial(dFeSpace, solver);
