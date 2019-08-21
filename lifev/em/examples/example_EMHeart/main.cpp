@@ -201,7 +201,8 @@ int main (int argc, char** argv)
     auto FESpace = solver.structuralOperatorPtr() -> dispFESpacePtr();
     auto dETFESpace = solver.electroSolverPtr() -> displacementETFESpacePtr();
     auto ETFESpace = solver.electroSolverPtr() -> ETFESpacePtr();
-    Real t = 0;
+    
+    //Real t = 0;
     
     //============================================
     // Create essential patch b.c.
@@ -383,7 +384,7 @@ int main (int argc, char** argv)
     VectorSmall<2> AvgWorkVent;
     
     UInt iter (0);
-    //Real t (0);
+    Real t (0);
     
     auto printCoupling = [&] ( std::string label ) { if ( 0 == comm->MyPID() )
     {
