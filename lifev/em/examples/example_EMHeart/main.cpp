@@ -384,7 +384,9 @@ int main (int argc, char** argv)
     VectorSmall<2> AvgWorkVent;
     
     UInt iter (0);
-    Real t (0);
+    
+    t=0;
+    //Real t (0);
     
     auto printCoupling = [&] ( std::string label ) { if ( 0 == comm->MyPID() )
     {
