@@ -201,13 +201,13 @@ int main (int argc, char** argv)
     auto FESpace = solver.structuralOperatorPtr() -> dispFESpacePtr();
     auto dETFESpace = solver.electroSolverPtr() -> displacementETFESpacePtr();
     auto ETFESpace = solver.electroSolverPtr() -> ETFESpacePtr();
-    
+    Real t = 0;
     
     //============================================
     // Create essential patch b.c.
     //============================================
     EssentialPatchBCHandler patchHandler ("listEssentialPatchBC", dataFile);
-    patchHandler.addPatchBC(solver);
+    patchHandler.addPatchBC(solver,t);
     
     if ( 0 == comm->MyPID() ) PRINT_FACTORY(EssentialPatchBC);
     
@@ -265,10 +265,13 @@ int main (int argc, char** argv)
     //============================================
     // Apply essential patch b.c.
     //============================================
-    patchHandler.applyPatchBC(solver);
+    patchHandler.applyPatchBC(solver); //this one we get downwards to get better understanding
     heartSolver.setPatchDisplacementSumPtr(patchHandler.patchDisplacementSumPtr());
     heartSolver.setPatchLocationSumPtr(patchHandler.patchLocationSumPtr());
-
+    heartSolver.setPatchFacesLocationSumPtr(patchHandler.patchFacesLocationSumPtr());
+    heartSolver.setPatchVecSumPtr(patchHandler.patchVecSumPtr());
+    heartSolver.setdirecVectorPtr(patchHandler.directionalVecSumPtr());
+    
     
     //============================================
     // Setup exporters for EMSolver
@@ -377,7 +380,7 @@ int main (int argc, char** argv)
     VectorSmall<2> AvgWorkVent;
     
     UInt iter (0);
-    Real t (0);
+    //Real t (0);
     
     auto printCoupling = [&] ( std::string label ) { if ( 0 == comm->MyPID() )
     {
