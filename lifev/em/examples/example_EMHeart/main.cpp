@@ -251,29 +251,29 @@ int main (int argc, char** argv)
     else solver.oneWayCoupling();
     
     solver.structuralOperatorPtr()->setNewtonParameters(dataFile);
-    if ( 0 == comm->MyPID() ) std::cout << "\nTEST1"
+    if ( 0 == comm->MyPID() ) std::cout << "\nTEST1";
     solver.buildSystem();
-    if ( 0 == comm->MyPID() ) std::cout << "\nTEST2"
+    if ( 0 == comm->MyPID() ) std::cout << "\nTEST2";
     if ( 0 == comm->MyPID() ) std::cout << "\n\nNode number: " << disp.size() / 3 << " -> dof: " << disp.size() << "\n\n";
-    if ( 0 == comm->MyPID() ) std::cout << "\nTEST3"
+    if ( 0 == comm->MyPID() ) std::cout << "\nTEST3";
     
     //============================================
     // Electric stimulus function
     //============================================
     function_Type stim = &HeartSolver<EMSolver<mesh_Type, monodomain_Type> >::Iapp;
-    if ( 0 == comm->MyPID() ) std::cout << "\nTEST5"
+    if ( 0 == comm->MyPID() ) std::cout << "\nTEST5";
     
     //============================================
     // Apply essential patch b.c.
     //============================================
-    if ( 0 == comm->MyPID() ) std::cout << "\nTEST6"
+    if ( 0 == comm->MyPID() ) std::cout << "\nTEST6";
     patchHandler.applyPatchBC(solver); //this one we get downwards to get better understanding
     heartSolver.setPatchDisplacementSumPtr(patchHandler.patchDisplacementSumPtr());
     heartSolver.setPatchLocationSumPtr(patchHandler.patchLocationSumPtr());
     heartSolver.setPatchFacesLocationSumPtr(patchHandler.patchFacesLocationSumPtr());
     heartSolver.setPatchVecSumPtr(patchHandler.patchVecSumPtr());
     heartSolver.setdirecVectorPtr(patchHandler.directionalVecSumPtr());
-    if ( 0 == comm->MyPID() ) std::cout << "\nTEST7"
+    if ( 0 == comm->MyPID() ) std::cout << "\nTEST7";
     
     //============================================
     // Setup exporters for EMSolver
