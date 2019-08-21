@@ -270,9 +270,10 @@ int main (int argc, char** argv)
     patchHandler.applyPatchBC(solver); //this one we get downwards to get better understanding
     heartSolver.setPatchDisplacementSumPtr(patchHandler.patchDisplacementSumPtr());
     heartSolver.setPatchLocationSumPtr(patchHandler.patchLocationSumPtr());
-    heartSolver.setPatchFacesLocationSumPtr(patchHandler.patchFacesLocationSumPtr());
-    heartSolver.setPatchVecSumPtr(patchHandler.patchVecSumPtr());
-    heartSolver.setdirecVectorPtr(patchHandler.directionalVecSumPtr());
+    
+    //heartSolver.setPatchFacesLocationSumPtr(patchHandler.patchFacesLocationSumPtr());
+    //heartSolver.setPatchVecSumPtr(patchHandler.patchVecSumPtr());
+    //heartSolver.setdirecVectorPtr(patchHandler.directionalVecSumPtr());
     if ( 0 == comm->MyPID() ) std::cout << "\nTEST7";
     
     //============================================
