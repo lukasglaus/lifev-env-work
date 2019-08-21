@@ -202,7 +202,7 @@ int main (int argc, char** argv)
     auto dETFESpace = solver.electroSolverPtr() -> displacementETFESpacePtr();
     auto ETFESpace = solver.electroSolverPtr() -> ETFESpacePtr();
     
-    //Real t = 0;
+    Real t = 0;
     
     //============================================
     // Create essential patch b.c.
