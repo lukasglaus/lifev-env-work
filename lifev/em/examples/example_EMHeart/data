@@ -209,6 +209,7 @@ monodomain_xml_file = ParamListE.xml
 
     #listEssentialPatchBC = 'EssentialPatchCircular1 EssentialPatchCircular2'
     #listEssentialPatchBC = 'EssentialPatchEllipsoid1 EssentialPatchEllipsoid2'
+    #listEssentialPatchBC = 'EssentialPatchRealYZ1 EssentialPatchRealYZ2'
 
         [./EssentialPatchCircular1]
         flag                = 464
@@ -251,6 +252,71 @@ monodomain_xml_file = ParamListE.xml
         edgeDispFactor      = 0.5
         princSemiAxesLength = '2.0 1.0 3.0'
         displacement        = 1.2
+
+        [../EssentialPatchMovingPlane1]
+        flag                    = 464
+        startingpoint           = '-1.8 -7.0 -4.5'
+        direction               = '1.0 0.0 1.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCMovingPlane
+        displacement            = 1.2
+
+        [../EssentialPatchMovingPlane2]
+        flag                    = 464
+        startingpoint           = '3.5 -7.0 1.0'
+        direction               = '-1.0 0.0 1.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCMovingPlane
+        displacement            = 1.2
+
+        [../EssentialPatchRealPatch1]
+        flag                    = 464
+        phi            = 0
+        theta            = 0
+        a            = 3.5
+        b            = 8
+        c            = 5
+        height            = 3.5
+        width            = 4.5
+        shift            = 0
+        vertexEllipse        = '4.11401 -7.85605 -1.66889'
+        direction               = '0.0 0.0 0.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCPatchReal
+        displacement            = 1.0
+
+        [../EssentialPatchRealYZ1]
+        flag                    = 464
+        phi                     = 0
+        psi                     = -12.3    #-10
+        a                       = 5.4 # 6  #8
+        b                       = 8.0846    #7.4407  #7.6118  # 8.3351 #6
+        c                       = 7   # 3.5  #4
+        height                  = 4.9  # 5.1
+        width                   = 11 #12 #5.8
+        normalVector            = '0.905402 -0.187201 -0.381055'
+        vertexEllipse           = '3.47965 -6.57128 -3.84336'  #  '4.07965 -6.57128 -3.84336'     #'3.47965 -6.57128 -3.84336'     #'4.00018 -6.54221 -3.5716'    #'3.50018 -6.54221 -3.5716'  # Best One '3.47592 -8.49863 -3.22094'
+        direction               = '0.0 0.0 0.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCPatchRealYZRotation
+        displacement            = 0.7  # 1.4  #2.5 # 4.7
+
+        [../EssentialPatchRealYZ2]
+        flag                    = 464
+        phi                     = 0 #only this value is taken if x-coordinate of vertexEllipse = 1000
+        psi                     = 26 #28  #35  # 23  #43.26  #45  #37  #52  #47
+        a                       = 6 #5.4 # 6  #8
+        b                       = 8.1333  #6.25  #12.1452    #7.4407  #7.6118  # 8.3351 #6
+        c                       = 8   # 3.5  #4
+        height                  = 5  # 5.1
+        width                   = 13 #12 #5.8
+        normalVector            = '-0.660262 -0.64017 0.390209'
+        vertexEllipse           = '-3.823893 -7.72928 3.1143093' #if x-coordinate of vertexEllipse = 1000, it takes phi value above  #    '-3.859499 -7.72928 3.1382113' #   '-3.9321235 -7.72928 3.186939'     # '-3.826282. -7.72928 3.115871'    # '-3.68023 -7.72928 3.01679' #
+        direction               = '0.0 0.0 0.0'
+        component               = '0 2'
+        type                    = EssentialPatchBCPatchRealYZRotation
+        displacement            = 0.7   # 1.4 # 4.7
+
 
         [../]
 
