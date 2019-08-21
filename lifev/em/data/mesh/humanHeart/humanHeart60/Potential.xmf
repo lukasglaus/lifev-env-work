@@ -12,10 +12,10 @@
       <Time TimeType="Single" Value="0" />
       <Topology
          Type="Tetrahedron"
-         NumberOfElements="10365"
+         NumberOfElements="10519"
          BaseOffset="0">
          <DataStructure Format="HDF"
-                        Dimensions="10365 4"
+                        Dimensions="10519 4"
                         DataType="Int"
                         Precision="8">
              Potential.h5:/Connections/Values
@@ -23,19 +23,19 @@
       </Topology>
       <Geometry Type="X_Y_Z">
          <DataStructure Format="HDF"
-                        Dimensions="3124"
+                        Dimensions="3140"
                         DataType="Float"
                         Precision="8">
              Potential.h5:/PointsX.00000/Values
          </DataStructure>
          <DataStructure Format="HDF"
-                        Dimensions="3124"
+                        Dimensions="3140"
                         DataType="Float"
                         Precision="8">
              Potential.h5:/PointsY.00000/Values
          </DataStructure>
          <DataStructure Format="HDF"
-                        Dimensions="3124"
+                        Dimensions="3140"
                         DataType="Float"
                         Precision="8">
              Potential.h5:/PointsZ.00000/Values
@@ -48,16 +48,16 @@
          Center="Node"
          Name="potential">
          <DataStructure ItemType="HyperSlab"
-                        Dimensions="3124 1"
+                        Dimensions="3140 1"
                         Type="HyperSlab">
            <DataStructure  Dimensions="3 2"
                            Format="XML">
                0    0
                1    1
-               3124 1
+               3140 1
            </DataStructure>
            <DataStructure  Format="HDF"
-                           Dimensions="19410 1"
+                           Dimensions="19587 1"
                            DataType="Float"
                            Precision="8">
                Potential.h5:/potential.00000/Values

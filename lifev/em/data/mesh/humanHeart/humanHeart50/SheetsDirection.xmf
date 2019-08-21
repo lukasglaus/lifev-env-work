@@ -12,10 +12,10 @@
       <Time TimeType="Single" Value="0" />
       <Topology
          Type="Tetrahedron"
-         NumberOfElements="8956"
+         NumberOfElements="9304"
          BaseOffset="0">
          <DataStructure Format="HDF"
-                        Dimensions="8956 4"
+                        Dimensions="9304 4"
                         DataType="Int"
                         Precision="8">
              SheetsDirection.h5:/Connections/Values
@@ -23,19 +23,19 @@
       </Topology>
       <Geometry Type="X_Y_Z">
          <DataStructure Format="HDF"
-                        Dimensions="2727"
+                        Dimensions="2815"
                         DataType="Float"
                         Precision="8">
              SheetsDirection.h5:/PointsX.00000/Values
          </DataStructure>
          <DataStructure Format="HDF"
-                        Dimensions="2727"
+                        Dimensions="2815"
                         DataType="Float"
                         Precision="8">
              SheetsDirection.h5:/PointsY.00000/Values
          </DataStructure>
          <DataStructure Format="HDF"
-                        Dimensions="2727"
+                        Dimensions="2815"
                         DataType="Float"
                         Precision="8">
              SheetsDirection.h5:/PointsZ.00000/Values
@@ -48,16 +48,16 @@
          Center="Node"
          Name="sheets">
          <DataStructure ItemType="HyperSlab"
-                        Dimensions="2727 3"
+                        Dimensions="2815 3"
                         Type="HyperSlab">
            <DataStructure  Dimensions="3 2"
                            Format="XML">
                0    0
                1    1
-               2727 3
+               2815 3
            </DataStructure>
            <DataStructure  Format="HDF"
-                           Dimensions="16885 3"
+                           Dimensions="17467 3"
                            DataType="Float"
                            Precision="8">
                SheetsDirection.h5:/sheets.00000/Values

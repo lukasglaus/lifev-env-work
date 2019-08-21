@@ -1,0 +1,147 @@
+Sender: LSF System <lsfadmin@eu-c7-112-05>
+Subject: Job 96418438: <Fibers_a> in cluster <euler> Done
+
+Job <Fibers_a> was submitted from host <eu-login-09-ng> by user <lglaus> in cluster <euler> at Wed Jul 31 13:33:47 2019
+Job was executed on host(s) <4*eu-c7-112-05>, in queue <normal.4h>, as user <lglaus> in cluster <euler> at Wed Jul 31 13:34:07 2019
+</cluster/home/lglaus> was used as the home directory.
+</cluster/home/lglaus/LIFE5/lifev-env/lifev-em-build/lifev/electrophysiology/examples/createFibersHeart> was used as the working directory.
+Started at Wed Jul 31 13:34:07 2019
+Terminated at Wed Jul 31 13:34:54 2019
+Results reported at Wed Jul 31 13:34:54 2019
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+mpirun Electrophysiology_test_fibers.exe -f dataHeart -o humanHeart220
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   172.76 sec.
+    Max Memory :                                 2035 MB
+    Average Memory :                             1519.25 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               2061.00 MB
+    Max Swap :                                   -
+    Max Processes :                              7
+    Max Threads :                                16
+    Run time :                                   69 sec.
+    Turnaround time :                            67 sec.
+
+The output (if any) follows:
+
+
+Mesh size (max): 0.636404
+Mesh size (min): 6.21369e-05
+Mesh size (av.): 0.25754
+Loading time: 2.2 s.
+      Setup: Max:   0.027, Sum:   0.107, Balance:   1.006
+   Matching: Max:   0.019, Sum:   0.077, Balance:   1.000
+Contraction: Max:   0.019, Sum:   0.077, Balance:   1.000
+   InitPart: Max:   0.001, Sum:   0.003, Balance:   1.001
+    Project: Max:   0.001, Sum:   0.004, Balance:   1.052
+ Initialize: Max:   0.003, Sum:   0.010, Balance:   1.011
+      K-way: Max:   0.011, Sum:   0.045, Balance:   1.009
+      Remap: Max:   0.000, Sum:   0.000, Balance:   1.021
+      Total: Max:   0.081, Sum:   0.325, Balance:   1.000
+Final 4-way CUT:   1982 	Balance: 1.037   avg: 1.037
+Building local mesh ...
+Partitioning time: 0.66 s.
+SLV-  Computing the preconditioner...
+SLV-  Build the preconditioner using the problem matrix
+SLV-  Preconditioner computed in 28.9436 s.
+SLV-  Estimated condition number               433.925
+
+		*******************************************************
+		***** Problem: Epetra::CrsMatrix
+		***** Preconditioned GMRES solution
+		***** Ifpack_AdditiveSchwarz, ov = 0, local solver = 
+		***** `Amesos_Klu'
+		***** Condition number estimate = 433.925
+		***** No scaling
+		*******************************************************
+
+                iter:    0           residual = 1.000000e+00
+                iter:    1           residual = 2.311701e-02
+                iter:    2           residual = 1.249135e-02
+                iter:    3           residual = 8.089435e-03
+                iter:    4           residual = 4.935300e-03
+                iter:    5           residual = 2.815848e-03
+                iter:    6           residual = 1.803567e-03
+                iter:    7           residual = 1.071379e-03
+                iter:    8           residual = 7.015837e-04
+                iter:    9           residual = 4.334839e-04
+                iter:   10           residual = 2.810192e-04
+                iter:   11           residual = 1.648033e-04
+                iter:   12           residual = 1.004537e-04
+                iter:   13           residual = 5.964795e-05
+                iter:   14           residual = 3.705772e-05
+                iter:   15           residual = 2.232175e-05
+                iter:   16           residual = 1.392095e-05
+                iter:   17           residual = 8.327218e-06
+                iter:   18           residual = 5.110735e-06
+                iter:   19           residual = 2.974227e-06
+                iter:   20           residual = 1.834661e-06
+                iter:   21           residual = 1.098357e-06
+                iter:   22           residual = 6.551450e-07
+                iter:   23           residual = 3.809000e-07
+                iter:   24           residual = 2.273928e-07
+                iter:   25           residual = 1.379725e-07
+                iter:   26           residual = 8.318042e-08
+                iter:   27           residual = 4.837986e-08
+                iter:   28           residual = 2.810169e-08
+                iter:   29           residual = 1.612189e-08
+                iter:   30           residual = 9.443166e-09
+                iter:   31           residual = 5.338651e-09
+                iter:   32           residual = 3.136863e-09
+                iter:   33           residual = 1.784374e-09
+                iter:   34           residual = 1.058714e-09
+                iter:   35           residual = 6.158478e-10
+                iter:   36           residual = 3.654399e-10
+                iter:   37           residual = 2.051016e-10
+                iter:   38           residual = 1.171498e-10
+                iter:   39           residual = 6.509744e-11
+
+
+		Solution time: 3.538690 (sec.)
+		total iterations: 39
+SLV-  Solution time: 3.54381 s.
+SLV-  Convergence in 39 iterations
+  X-  HDF5 post-processing ...                 done in 0.25 s.
+
+==============================================================
+=========   NORMALIZING
+==============================================================
+=========   DONE !!!
+==============================================================
+==============================================================
+=========   NORMALIZING
+==============================================================
+=========   DONE !!!
+==============================================================
+==============================================================
+=========   NORMALIZING
+==============================================================
+=========   DONE !!!
+==============================================================  X-  HDF5 post-processing ...                 done in 0.4 s.
+  X-  HDF5 post-processing ...                 done in 0.38 s.
+  X-  HDF5 post-processing ...                 done in 0.41 s.
+
+Error: 2.6092263067547578502e-16
+Fiber Norm: 435.71091333589509986
+Sheet Norm: 435.71091333589521355
+
+Error: 2.6092263067547578502e-16
+Fiber Norm: 435.71091333589509986
+Sheet Norm: 435.71091333589521355
+
+Error: 2.6092263067547578502e-16
+Fiber Norm: 435.71091333589509986
+Sheet Norm: 435.71091333589521355
+
+Error: 2.6092263067547578502e-16
+Fiber Norm: 435.71091333589509986
+Sheet Norm: 435.71091333589521355
