@@ -208,7 +208,7 @@ int main (int argc, char** argv)
     // Create essential patch b.c.
     //============================================
     EssentialPatchBCHandler patchHandler ("listEssentialPatchBC", dataFile);
-    patchHandler.addPatchBC(solver);//,t);
+    patchHandler.addPatchBC(solver,t);
     
     if ( 0 == comm->MyPID() ) PRINT_FACTORY(EssentialPatchBC);
     
