@@ -57,7 +57,7 @@ monodomain_xml_file = ParamListE.xml
     [../]
 
 [pressure_profile]
-    boolpressureloader = true
+    boolpressureloader = false
     filenamepressureloader = solutionforpressureloader.txt
 
 [solid]
