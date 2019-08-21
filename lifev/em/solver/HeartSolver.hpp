@@ -239,12 +239,32 @@ public:
                                      M_emSolver.structuralOperatorPtr()->dispFESpacePtr(),
                                      this->patchDispSumPtr(),
                                      UInt (0) );
+	
+	 m_exporter->addVariable (    ExporterData<RegionMesh<LinearTetra> >::VectorField,
+                                     "Patch VectorField",
+                                     M_emSolver.structuralOperatorPtr()->dispFESpacePtr(),
+                                     this->patchVecSumPtr(),
+                                     UInt (0) );
 
+	m_exporter->addVariable  (  ExporterData<RegionMesh<LinearTetra> >::VectorField,
+                                     "Directional Vectorfield",
+                                     M_emSolver.structuralOperatorPtr()->dispFESpacePtr(),
+                                     this->directVecSumPtr(),
+                                     UInt (0) );
+
+
+	
         m_exporter->addVariable (    ExporterData<RegionMesh<LinearTetra> >::ScalarField,
                                      "Patch location",
                                      M_emSolver.electroSolverPtr()->feSpacePtr(),
                                      this->patchLocSumPtr(),
                                      UInt (0) );
+	
+	m_exporter->addVariable (    ExporterData<RegionMesh<LinearTetra> >::ScalarField,
+				     "Patch Faces Location",
+				     M_emSolver.electroSolverPtr()->feSpacePtr(),
+				     this->patchFacesLocSumPtr(),
+				     UInt (0) );
         
         m_exporter->addVariable (    ExporterData<RegionMesh<LinearTetra> >::VectorField,
                                      "Fibers",
@@ -306,7 +326,7 @@ public:
         M_emSolver.tensionEstimator().setDisplacement ( M_emSolver.structuralOperatorPtr()->displacement() );
         M_emSolver.tensionEstimator().analyzeTensionsRecoveryCauchyStresses();
         M_emSolver.tensionEstimator().analyzeTensionsRecoveryVonMisesStress();
-        //M_emSolver.tensionCEstimator().analyzeTensionsRecoveryEigenvalues();
+        //M_emSolver.tensionEstimator().analyzeTensionsRecoveryEigenvalues();
 
         // Compute deformed fiber direction
         M_emSolver.computeDeformedFiberDirection (M_emSolver.structuralOperatorPtr()->f(), *M_emSolver.structuralOperatorPtr()->EMMaterial()->fiberVectorPtr(), *M_emSolver.structuralOperatorPtr()->displacementPtr(), M_emSolver.structuralOperatorPtr()->dispFESpacePtr());
@@ -386,6 +406,37 @@ public:
         return m_patchLocationSumPtr;
     }
     
+    void setPatchFacesLocationSumPtr(vectorPtr_Type patchFacesLocationSumPtr)
+    {
+
+	m_patchFacesLocationSumPtr = patchFacesLocationSumPtr;
+    }
+
+    vectorPtr_Type patchFacesLocSumPtr()
+    {
+       return m_patchFacesLocationSumPtr;
+    }
+
+    void setPatchVecSumPtr(vectorPtr_Type patchVecSumPtr)
+    {
+	m_patchVecSumPtr = patchVecSumPtr;
+    }    
+
+    vectorPtr_Type patchVecSumPtr()
+    {
+       return m_patchVecSumPtr;
+    }
+
+
+    void setdirecVectorPtr(vectorPtr_Type direcVectorPtr)
+    {
+        m_directionVecFieldPtr = direcVectorPtr;
+    }
+
+    vectorPtr_Type directVecSumPtr()
+    {
+       return m_directionVecFieldPtr;
+    }
 
     const std::vector<std::vector<double> > pressureloader (const std::string& filename)
     {
@@ -394,54 +445,41 @@ public:
     #include <iostream>
     #include <sstream>
     #include <fstream>
-        
         std::ifstream myifstream (filename);
         std::string box;
         int i=0;
-        
         if ( 0 == emSolver().comm()->MyPID()) cout<<"\npressureloader filename: " <<filename;
-        
         std::vector<double> time;
         std::vector<double> lvp;
         std::vector<double> rvp;
-        
         if (myifstream.is_open())
         {
             while (getline(myifstream,box)){
                 std::stringstream stream(box);
                 std::string num;
                 std::vector<double> numbers;
-                
                 while (stream >> num)
-                    {
-                        numbers.push_back(std::stod(num));
-                    }
-                
+                {
+                    numbers.push_back(std::stod(num));
+                }
                 time.push_back(numbers[0]);
                 lvp.push_back(numbers[1]);
                 rvp.push_back(numbers[6]);
                 ++i;
-                
             }
-            
             if ( 0 == emSolver().comm() ) cout<<"\npressureloader: fixed pressure vector generated";
         }
-        
         else
         {
             if ( 0 == emSolver().comm() ) cout<<"\npressure_file_couldn't be loaded";
-            
         }
-        
         std::vector<std::vector<double> > fixedpressuredistribution;
         fixedpressuredistribution.push_back(time);
         fixedpressuredistribution.push_back(lvp);
         fixedpressuredistribution.push_back(rvp);
-        
         return fixedpressuredistribution;
-   
     }
- 
+
 protected:
     
     EmSolver& M_emSolver;
@@ -458,7 +496,9 @@ protected:
 
     boost::shared_ptr<VectorEpetra> m_patchDisplacementSumPtr;
     boost::shared_ptr<VectorEpetra> m_patchLocationSumPtr;
-    
+    boost::shared_ptr<VectorEpetra> m_patchFacesLocationSumPtr;    
+    boost::shared_ptr<VectorEpetra> m_patchVecSumPtr;
+    boost::shared_ptr<VectorEpetra> m_directionVecFieldPtr;
     
     
     std::string pipeToString ( const char* command )
